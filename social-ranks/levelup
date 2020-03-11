@@ -1,0 +1,50 @@
+{{$x := "x"}}
+{{ $ID := .User.ID }}
+{{$xp := (toInt (dbGet $ID "XP").Value)}}
+{{$RoleID0 := 681541814230188088}}
+{{$RoleID1 := 681541592003510275}}
+{{$RoleID2 := 681541704612053049}}
+{{$RoleID3 := 681541863131709460}}
+{{$RoleID4 := 681541935697100829}}
+{{$RoleID5 := 681541967741452331}}
+{{ if (and (ge $xp 2000) (lt $xp 30000))}}
+{{if not (hasRoleID $RoleID0)}}
+  {{ addRoleID $RoleID0 }}
+{{$x = "y"}}
+{{end}}
+{{ else if (and (ge $xp 30000) (lt $xp 75000))}}
+{{if not (hasRoleID $RoleID1)}}
+  {{ addRoleID $RoleID1 }}
+  {{ removeRoleID $RoleID0 }}
+{{$x = "y"}}
+{{end}}
+{{ else if (and (ge $xp 75000) (lt $xp 150000))}}
+{{if not (hasRoleID $RoleID2)}}
+  {{ addRoleID $RoleID2 }}
+  {{ removeRoleID $RoleID1 }}  
+{{$x = "y"}}
+{{end}}
+{{ else if (and (ge $xp 150000) (lt $xp 300000))}}
+{{if not (hasRoleID $RoleID3)}}
+  {{ addRoleID $RoleID3 }}
+  {{ removeRoleID $RoleID2 }}  
+{{$x = "y"}}
+{{end}}
+{{ else if (and (ge $xp 300000) (lt $xp 600000))}}
+{{if not (hasRoleID $RoleID4)}}
+  {{ addRoleID $RoleID4 }}
+  {{ removeRoleID $RoleID3 }}
+{{$x = "y"}}
+{{end}}
+{{ else if ge $xp 600000 }}
+{{if not (hasRoleID $RoleID5)}}
+  {{ addRoleID $RoleID5 }}
+  {{ removeRoleID $RoleID4 }}
+{{$x = "y"}}
+{{end}}
+{{ end }}
+{{if ne $x "x"}}
+{{sendMessage nil "You had enough **XP**, and your rank was raised. ☺️"}}
+{{else}}
+{{sendMessage nil "You didn't have enough **XP**, and your rank wasn't raised. 😢"}}
+{{end}}
