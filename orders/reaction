@@ -1,0 +1,54 @@
+{{$emojiUsed := "false"}}
+{{$reaction := ""}}
+{{if .Reaction.Emoji.ID}}
+	{{$reaction = joinStr "" .Reaction.Emoji.Name ":" .Reaction.Emoji.ID}}
+{{else}}
+	{{$reaction = .Reaction.Emoji.Name}}
+{{end}}
+{{$orderNumber := (toInt (dbGet 0 "orders").Value)}}
+{{$footer := "" }}
+{{$status := ""}}
+{{$customer := ""}}
+{{if and (reFind `683387930957316180` (toString .Channel.ID))
+ (.ReactionMessage.Embeds)}}
+	{{if (reFind `New Order` (slice  (json (index .ReactionMessage.Embeds 0)) 26 35))}}
+		{{ $customer = (getMember (slice  (json (index .ReactionMessage.Embeds 0) ) 70 88)).User }}
+		{{if (reFind `(.)New(.)` (.ReactionMessage.Content))}}
+			{{$status = "Not Started` <:redx:641492544261193748>"}}
+		{{else if (reFind `(.)Started(.)` (.ReactionMessage.Content))}}
+			{{$status = "In progress` 🕒"}}
+		{{else if (reFind  `(.)Canceled(.)` (.ReactionMessage.Content))}}
+			{{$status = "Canceled` 🚫"}}	
+		{{else if (reFind `Completed` (.ReactionMessage.Content))}}
+			{{$status = "Completed` <:check:641492527169536020>"}}
+		{{end}}
+		{{ if eq .Reaction.Emoji.Name "👍" }}
+			{{$emojiUsed = "true"}}
+			{{deleteMessageReaction nil .ReactionMessage.ID .User.ID $reaction}}
+			{{takeRoleID $customer.ID 683530003165872140}}
+			{{editMessageNoEscape nil .ReactionMessage.ID (complexMessageEdit "content" (joinStr "" "**(Finished)** Attention" (mentionRoleID 670469681273896990) ": <:check:641492527169536020> " .User.Mention " __**Completed**__ this order. "))}}
+			{{sendMessage 683099218671566856 (joinStr "" $customer.Mention ", your order has been completed <:check:641492527169536020>")}}
+		{{else if eq .Reaction.Emoji.Name "🚫"}}
+			{{$emojiUsed = "true"}}
+			{{deleteMessageReaction nil .ReactionMessage.ID .User.ID $reaction}}
+			{{takeRoleID $customer.ID 683530003165872140}}
+			{{editMessageNoEscape nil .ReactionMessage.ID (complexMessageEdit "content" (joinStr "" "**(Updated)** Attention" (mentionRoleID 670469681273896990) ": 🚫 " .User.Mention " __**Canceled**__ this order. "))}}
+			{{sendMessage 683099218671566856 (joinStr "" $customer.Mention ", 🚫 Unfortunately your order cannot be processed as you placed it. Please do `-order help` for more info.")}}
+		{{else if eq .Reaction.Emoji.Name "🕒"}}
+			{{$emojiUsed = "true"}}
+			{{deleteMessageReaction nil .ReactionMessage.ID .User.ID $reaction}}
+			{{editMessageNoEscape nil .ReactionMessage.ID (complexMessageEdit "content" (joinStr "" "**(Updated)** Attention" (mentionRoleID 670469681273896990) ": 🕒 " .User.Mention " __**Started working**__ on this order."))}}
+			{{sendMessage 683099218671566856 (joinStr "" $customer.Mention ", 🕒 An admin has started on your order. You will be notified when it is finished.")}}
+		{{else if eq .Reaction.Emoji.Name "🔐"}}
+			{{deleteMessageReaction nil .ReactionMessage.ID .User.ID $reaction}}
+			{{if or (reFind `(Updated)` .ReactionMessage.Content) (reFind `(Finished)` .ReactionMessage.Content)}}
+				{{deleteMessage nil .ReactionMessage.ID 0}}
+				{{sendMessage nil (joinStr "" .User.Mention " __**Closed**__ " ($customer.Mention) "'s order. *(" (index .ReactionMessage.Embeds 0).Footer.Text ")* ** Status:** " "`" ($status))}}
+			{{end}}
+		{{else}}
+			{{deleteMessageReaction nil .ReactionMessage.ID .User.ID $reaction}}
+		{{end}}
+	{{end}}
+{{else}}
+	{{deleteMessageReaction nil .ReactionMessage.ID .User.ID $reaction}}	
+{{end}}
