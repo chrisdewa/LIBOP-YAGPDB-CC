@@ -1,0 +1,31 @@
+{{$args := parseArgs 1 "Correct Usage: **-order** `what you want to order/help`"
+	(carg "string" "item")}}
+{{$cochannel := ""}}
+{{$nick := (.Member.Nick)}}
+{{if eq $nick ""}}
+    {{$nick = .User.Username}}
+{{end}}
+{{if (reFind `(?i)^help` ($args.Get 0))}}
+	{{deleteTrigger 0}}
+	{{$embed := cembed
+	"title" (joinStr "" "__**How to place an order**__\n")
+	"description" (joinStr "" "**1)** Buy an item using the `!buy` and `!store` commands.\n**2)** Verify you have said item in your inventory using `!inv`.\n**3)** Use the command `-order` with what you're asking the admin team to supply.\n    **-** Example: `-order Please supply one Starter Kit`\n**4)** You can also use `-order` to ask the admin team to pay a bounty or reward a quest (<#679084895058001930> and <#671036896738279447>).\n	**-** Example:    `-order I completed quest number 3, reward please`\n**5)** You'll get the role: **Pending delivery** while the admin team supply what you ordered and it will be taken away afterwards.")
+	"color" 15621186}}
+	{{ sendMessage nil $embed }}
+{{else}}
+	{{if ne .Channel.ID 683099218671566856}}
+		{{$cochannel = " You can follow your order progress in <#683099218671566856>." }}
+	{{end}}
+	{{$channel := 683387930957316180}}
+		{{deleteTrigger 0}}
+		{{$orderRegistered := sendMessageRetID nil (joinStr "" "◆》**" $nick  "**, your order for **" .StrippedMsg "** has been registered." $cochannel " Await further instructions <a:CoolLoading:680834933190557759>\n✦ (Order #" (toInt (dbGet 0 "orders").Value) ")")}}
+		{{ $embed := cembed
+		"color" 15621186
+		"title" "__New Order__"
+		"description" (joinStr "" "The user " .User.Mention " ordered: **" (.StrippedMsg) "**" "\n\nRemember to:\n- React to this with emoji when you start (:clock12:)\n- React when you complete/deny (:thumbsup:/:no_entry_sign:)\n- Close the delivery with :closed_lock_with_key:\n\n**Thanks!**")
+		"footer" (sdict "text" (joinStr "" "Order #" (toInt (dbGet 0 "orders").Value)))}}
+		{{$msg := sendMessageNoEscapeRetID 683387930957316180 (complexMessage "content" (joinStr "" "**(New)** Attention" (mentionRoleID 670469681273896990) ":") "embed" $embed)}}
+		{{$nextOrder := dbIncr 0 "orders" 1}}
+		{{addMessageReactions 683387930957316180 $msg "👍" "🕒" "🚫" "🔐"}} 
+		{{addRoleID 683530003165872140}}
+{{end}}
