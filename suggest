@@ -1,0 +1,6 @@
+{{$args := parseArgs 1 "Correct usage is: **-suggest <your suggestion>**"
+    (carg "string" "suggestion") }}
+ 
+{{$newmsg := sendMessageNoEscapeRetID 674291986399887380 (cembed "description" (joinStr "" (.User.Mention) " **__Suggested:__** \n\n> " ($args.Get 0)))}} 
+{{addMessageReactions 674291986399887380 ($newmsg) "👍" "👎"}}
+{{deleteTrigger 0}}
