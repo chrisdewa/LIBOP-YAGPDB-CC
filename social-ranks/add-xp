@@ -1,0 +1,21 @@
+{{$xp := (toInt (dbGet .User.ID "XP").Value)}}
+{{$args := parseArgs 2 "You need to mention a user"
+    (carg "user" "mention")
+    (carg "int" "amount")}}
+{{$mention := ""}}
+{{if eq ($args.Get 0).ID .User.ID}}
+  {{$mention = "**themselves**"}}
+{{end}}
+ 
+{{deleteTrigger 0}}
+{{if (and (ge ($args.Get 1) $xp) (reFind `(take|sub)` .Cmd))}}
+    {{sendMessage nil (joinStr "" "**" (humanizeThousands ($args.Get 1)) "** is too much XP.\nThe user only has **" (humanizeThousands (toInt (dbGet ($args.Get 0).ID "XP").Value)) "** XP available.")}}
+{{else}}
+    {{if (reFind `(add|give)` .Cmd)}}
+        {{$addXP := dbIncr ($args.Get 0).ID "XP" (toInt ($args.Get 1))}}
+        {{sendMessage nil (joinStr "" (.User.Mention) " gave " (($args.Get 0).Mention) " **" (humanizeThousands ($args.Get 1)) "** XP.")}}
+    {{else if (reFind `(take|sub)` .Cmd)}}
+        {{$addXP := dbIncr ($args.Get 0).ID "XP" (mult -1 (toInt ($args.Get 1)))}}
+        {{sendMessage nil (joinStr "" (.User.Mention) " took **" (toString (humanizeThousands ($args.Get 1))) "** XP from " ($args.Get 0).Mention ".")}}
+    {{end}}
+{{end}}
