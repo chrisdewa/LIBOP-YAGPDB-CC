@@ -1,4 +1,4 @@
 
 {{$offset := REPLACE-WITH-UTC-OFFSET-IN-NANOSECONDS}}
 {{$vcchannel := REPLACE-WITH-TARGET-VC-CHANNEL-ID}}
-{{ editChannelName $vcchannel (joinStr " " ((currentTime.Add $offset).Format "3:04 PM"))}}
+{{editChannelName $vcchannel (joinStr " " ((currentTime.Add $offset).Format "3:04 PM"))}}
