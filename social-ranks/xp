@@ -1,0 +1,13 @@
+{{ $User := .User }}
+{{ $args := parseArgs 0 "- Correct Usage: **-XP (optional: @User)**"
+    ( carg "user" "mention" ) }}
+{{ if $args.IsSet 0 }}
+    {{ $User = $args.Get 0 }}
+{{ end }}
+    {{ $Username := $User.Username }}
+ 
+{{ $embed := cembed 
+"title" ( joinStr "" "**" $Username "**'s XP: " (humanizeThousands (toInt (dbGet $User.ID "XP").Value) ) )
+"color" 519283}}
+{{ sendMessage nil $embed }}
+{{deleteTrigger 0}}
