@@ -1,0 +1,57 @@
+{{$embed := ""}}
+{{$rank := 0}}
+{{$rankEmoji := ""}}
+{{$args := parseArgs 1 (joinStr "" "Correct usage: `" .Cmd " {amount (1-25)}`")
+	(carg "int" "amount") }}
+ 
+{{ $XP := (dbTopEntries "XP" ($args.Get 0) 0) }}
+{{ $out := "" }}
+{{- range $XP -}}
+	{{$rank = add $rank 1}}
+	{{if eq $rank 1}}
+		{{$rankEmoji = ":first_place:"}}
+	{{else if eq $rank 2}}
+		{{$rankEmoji = ":second_place:"}}
+	{{else if eq $rank 3}}
+		{{$rankEmoji = ":third_place:"}}
+	{{else if eq $rank 4}}
+		{{$rankEmoji = ":four:"}}
+	{{else if eq $rank 5}}
+		{{$rankEmoji = ":five:"}}
+	{{else if eq $rank 6}}
+		{{$rankEmoji = ":six:"}}
+	{{else if eq $rank 7}}
+		{{$rankEmoji = ":seven:"}}
+	{{else if eq $rank 8}}
+		{{$rankEmoji = ":eight:"}}
+	{{else if eq $rank 9}}
+		{{$rankEmoji = ":nine:"}}
+	{{else if eq $rank 10}}
+		{{$rankEmoji = ":keycap_ten:"}}
+	{{else}}
+		{{$rankEmoji = ":military_medal:"}}
+	{{end}}
+	{{ $out = joinStr "" $out "\n`Rank #" $rank "`┇**" (humanizeThousands (toInt .Value)) "** Experience\n " $rankEmoji " " .User.Mention "\n" }}
+{{- end -}}
+ 
+{{if eq ($args.Get 0) 1}}
+{{$embed = cembed
+"title" (joinStr "" "__**The Top XP User Is...**__\n")
+"description" (joinStr "" $out "\n*Wow, nice work!*" "")
+"color" 14108820
+"thumbnail" (sdict "url" "https://icons.iconarchive.com/icons/google/noto-emoji-activities/512/52727-1st-place-medal-icon.png")
+"timestamp" currentTime}}
+{{else}}
+{{$embed = cembed
+"title" (joinStr "" "__Top " ($args.Get 0) " XP Users__")
+"description" (joinStr "" "*The users with the most XP are:*\n\n" $out "")
+"color" 14108820
+"thumbnail" (sdict "url" "https://pngimage.net/wp-content/uploads/2018/05/exp-png-3.png")
+"timestamp" currentTime}}
+{{end}}
+ 
+{{if le ($args.Get 0) 25}}
+{{sendMessage nil $embed}}
+{{else}}
+{{sendMessage nil (joinStr "" "Too many users.\nCorrect usage: `" .Cmd " {amount (1-25)}`")}}
+{{end}}
