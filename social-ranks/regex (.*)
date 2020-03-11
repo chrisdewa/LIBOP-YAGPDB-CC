@@ -1,0 +1,32 @@
+{{$incrAmt := randInt 1 10}}
+{{$RoleID0 := 681541814230188088}}
+{{$RoleID1 := 681541592003510275}}
+{{$RoleID2 := 681541704612053049}}
+{{$RoleID3 := 681541863131709460}}
+{{$RoleID4 := 681541935697100829}}
+{{$RoleID5 := 681541967741452331}}
+{{if hasRoleID $RoleID0}}
+  {{$incrAmt = (mult $incrAmt 1.5)}}
+{{else if hasRoleID $RoleID1}}
+  {{$incrAmt = (mult $incrAmt 2)}}
+{{else if hasRoleID $RoleID2}}
+  {{$incrAmt = (mult $incrAmt 2.5)}}
+{{else if hasRoleID $RoleID3}}
+  {{$incrAmt = (mult $incrAmt 3)}}
+{{else if hasRoleID $RoleID4}}
+  {{$incrAmt = (mult $incrAmt 3.5)}}
+{{else if hasRoleID $RoleID5}}
+  {{$incrAmt = (mult $incrAmt 4)}}
+{{end}}
+{{ $ID := .User.ID }}
+{{ $time := (dbGet $ID "XPTimer") }}
+{{ if not (reFind `^(\+|\?|-|!)` .Message.Content) }}
+{{ if not $time }}
+  {{ if reFind `(thank|ty|thx|your welcome|yw|ur welcome|you're welcome)` .Message.Content }}
+    {{ $thanks := dbIncr $ID "XP" (mult $incrAmt 1.5) }}
+  {{ else }}
+    {{ $noThanks := dbIncr $ID "XP" $incrAmt}}
+  {{ end }}
+  {{ dbSetExpire $ID "XPTimer" "true" 3}}
+{{ end }}
+{{end}}
