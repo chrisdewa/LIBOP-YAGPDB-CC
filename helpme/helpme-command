@@ -1,0 +1,34 @@
+{{/*
+This command triggered code creates a msg with reactions and sets a temporary database entry for the user to store the message ID and its channel.
+Read YAGPDB documentation on custom commands.
+*/}}
+
+{{$ce0 := cembed
+		"title" "__**LIBOP HELP**__"
+		"description" (joinStr "" "Dear User, this menu contains the most frequent commands you'll need around our Discord and general info on our dynamics.\nIf you have any questions, please contact the Admin Team.\nCommands indicate `<Value needed>`, and `(value optional)`, but you don't *have* to put (), just the <>.\nExample:\n`!buy (quantity) <item name>`\n`!buy 3 wood` you'll buy 3 items of Wood (1000x Stacks).\n`!buy Excalibur` you'll buy 1 Excalibur item.")
+		"fields" (cslice 
+		(sdict "name" "__Menu Homepage❔__" "value" "This page."  "inline" false)
+		(sdict "name" "__Page 1️⃣__" "value" "Economy system.\nLearn how to earn money and how to spend it."  "inline" true)
+		(sdict "name" "__Page 2️⃣__" "value" "Orders.\nHow to use and get what you got with prairie bucks."  "inline" true)
+		(sdict "name" "__Page 3️⃣__" "value" "Quests, Bounties, and Bounty Hunter's Ranks."  "inline" true)
+		(sdict "name" "__Page 4️⃣__" "value" "Social Ranks System\nServer Pet."  "inline" true)
+		(sdict "name" "__Page 5️⃣__" "value" "Fun, Random and Utilities."  "inline" true)
+		(sdict "name" "__Close Menu ❌__" "value" "Close this menu."  "inline" false))
+		"footer" (sdict "text" (joinStr "" "Credit to ChrisDewa and Vibin'"))
+		"color" 16711680}}
+ 
+{{$oldhist := sdict "old" 0}}
+{{if (dbGet .User.ID "helpme").Value}}
+	{{$oldhist = sdict (dbGet .User.ID "helpme").Value}}
+{{end}}
+ 
+{{$idnew := sendMessageNoEscapeRetID nil (complexMessage "content" (joinStr "" .User.Mention " This is the help menu, navigate using the reactiosn below:") "embed" $ce0)}}
+{{addMessageReactions nil $idnew "❔" "1️⃣" "2️⃣" "3️⃣" "4️⃣" "5️⃣" "❌"}}
+{{dbSetExpire .User.ID "helpme" (sdict "old" $idnew "channel" .Channel.ID) 300}}
+{{scheduleUniqueCC 78 .Channel.ID 300 (joinStr "" .User.ID "HM" ) (sdict "chn" .Channel.ID "msgID" $idnew)}}
+ 
+{{if ($oldhist.Get "old")}}
+	{{editMessage ($oldhist.Get "channel") ($oldhist.Get "old") (complexMessageEdit "content" "Old menu automatically closed." "embed" nil)}}
+	{{deleteAllMessageReactions ($oldhist.Get "channel") ($oldhist.Get "old")}}
+{{end}}
+{{deleteTrigger 5}}
