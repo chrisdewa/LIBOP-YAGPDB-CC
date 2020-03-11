@@ -1,0 +1,5 @@
+{{$args := sdict .ExecData}}
+{{$msgCH := $args.Get "chn"}}
+{{$msgID := $args.Get "msgID"}}
+{{editMessage $msgCH $msgID (complexMessageEdit "content" (joinStr "" "Help menu closed automatically") "embed" nil)}}
+{{deleteAllMessageReactions $msgCH $msgID}}
