@@ -1,0 +1,93 @@
+{{$ce0 := cembed
+		"title" "__**LIBOP HELP**__"
+		"description" (joinStr "" "Dear User, this menu contains the most frecuent commands you'll need around our discord and general info on our dynamics.\nIf you have any questions, please contact the Admin Team.\nCommands indicate <Value needed> (value optional) you don't have to put either <> or () just the value.\nExample:\n`!buy (quantity) <item name>`\n`!buy 3 wood` you'll buy 3 items of Wood 1000x.\n`!buy Excalibur` you'll buy 1 Excalibur item.")
+		"fields" (cslice 
+		(sdict "name" "__Menu home page❔__" "value" "This page."  "inline" false)
+		(sdict "name" "__Page 1️⃣__" "value" "Economy system.\nLearn how to earn money and how to spend it."  "inline" true)
+		(sdict "name" "__Page 2️⃣__" "value" "Orders.\nHow to use and get what you got with prairie bucks."  "inline" true)
+		(sdict "name" "__Page 3️⃣__" "value" "Quests, Bounties and Bounty Hunter's Ranks."  "inline" true)
+		(sdict "name" "__Page 4️⃣__" "value" "Social Ranks system\nServer Pet."  "inline" true)
+		(sdict "name" "__Page 5️⃣__" "value" "Fun, random and utilities."  "inline" true)
+		(sdict "name" "__Close menu❌__" "value" "Close this menu."  "inline" false))
+		"footer" (sdict "text" (joinStr "" "Credit to ChrisDewa and Vibin'"))
+		"color" 16711680}}
+{{$ce1 := cembed
+		"title" "__**Page 1️⃣**__"
+		"description" (joinStr "" "**Economy System**\nPrairie money abreviated \"PR\" can be earn through different commands (see below) and used to buy things both for discord and in-game.")
+		"fields" (cslice 
+		(sdict "name" "`!shop (page #)`" "value" "Will show available items for purchase.\nUse command with optional number of pages.\n\"-shop\" will only show 1st page. " "inline" true)
+		(sdict "name" "`!work`" "value" "Will earn you a small amount of PR each time you use it. Has a cooldown"  "inline" true)
+		(sdict "name" "`!crime`" "value" "May earn you more money than `!work` but has a chance of getting fined loosing PR."  "inline" true)
+		(sdict "name" "`!dep all/<amount>`/`!with all/<amount>`" "value" "You're total amount of money is divided between your bank and your cash. Want to buy an item, you need to have cash, so use `!with` and you dont want to have 1M in cash so when you finish shopping or earning do `!dep`."  "inline" true)
+		(sdict "name" "`!bal`" "value" "Use to check how much money you have both in your bank and in cash."  "inline" true)
+		(sdict "name" "`!buy (quantity) <item name>`" "value" "When you have enough money in cash you'll be able to buy the item you want. Use this command to get it in your inventory.\nSome items will tell you to use the command `!use` but it's disabled because it broke stuff, use `!order` instead to get what you got, more info in page 2️⃣."  "inline" true)
+		(sdict "name" "`!inv`" "value" "Use this command to check what you have in your inventory.\nRemember you don't have to use everything right when you buy it, so here you can see all the items you own."  "inline" true)
+		(sdict "name" "`!lb (page #)`" "value" "Displays the leaderboard of who's got more money."  "inline" true)
+		(sdict "name" "`!give-money <user> <amount>`" "value" "You can use PR to commerce in-game goods with other players, when you close the deal you can transfer money from your cash to the user. You have to use proper mention (tag)." "inline" true)
+		(sdict "name" "`!help`" "value" "There's still many other commands not covered here, if you use this command you'll get a link to all Unbelivaboat commands.\nNote that not all commands are enabled and some are Admin retricted."  "inline" true)
+		(sdict "name" "Valid Channels" "value" "<#670500010915397632>\n<#683099218671566856>\n<#685634486079193101>"  "inline" false))
+		"color" 16711680}}
+{{$ce2 := cembed
+		"title" "__**Page 2️⃣**__"
+		"description" (joinStr "" "**Orders**\nWhen you finnaly get the item(s) you wanted from the store you'll want to tell the admins so they're able to help you get you stuff.\n\nFirst, think what you want to order, you can include any items you have and even ask for redemption of `Quests` `Bounties` (more info in page 3️⃣) and even `giveaways`.\n\nUse the command `!order <your order here>` you'll get a message acknowledging that the admins got your message, theres no need to tag the admins after this. When an admin starts working on you order you'll be notified. Await further instructions.\n\nExamples:\n`!order I bought a Starter pack please supply.`\n`!order I completed Quest #5 and i want to claim the award`\n`!order I have the allosaurus and i'd like to claim the bounty.`")
+		"color" 16711680}}
+{{$ce3 := cembed
+		"title" "__**Page 3️⃣**__"
+		"description" (joinStr "" "**Quests, Bounties and Bounty Hunter's Ranks.**\n\n__**Quests**__\nBy doing quests you earn quest tokens (__**QT**__), the more you have the higher up you get in the ranks of the Bounty Hunters. Each rank gets a steady **PR** income and a special weekly loot drop and some additional perks. Get more info in <#671036896738279447>.\n\n__**Bounties**__\nEvery once in a while an Admin will post a bounty in <#679084895058001930> your job if you choose to take it, is to complete an objetctive, delivering a tame to an admin. Each Bounty will get you some **PR** and some **QT** as well.\n\n__**IMPORTANT**__\nWhen you complete either a quest or a bounty use `!order`(info on page 2️⃣ ) to inform Admins as fast as you can, the reward goes to the first player to claim it.")
+		"color" 16711680}}
+{{$ce4 := cembed
+		"title" "__**Page 4️⃣**__"
+		"description" (joinStr "" "**Social Ranks system and Server Pet.**\n\nWhenever you talk except when using commands, you'll earn some amount of experience (**XP**), the more XP the higher your level. Each social survivor rank gets you a steady **PR** income.\n\nYou can also feed the family pet \"Jasmin\" to earn some additional experience.")
+		"fields" (cslice 
+		(sdict "name" "`-lb <ammount 1-30>`" "value" "Will show the (number you selected) users with more XP in the server." "inline" true)
+		(sdict "name" "`-xp (User mention)`" "value" "Will show you the experience of the selected user (**you** if you ran the command without arguments)" "inline" true)
+		(sdict "name" "`-daily`" "value" "Will grant you 500xp once a day." "inline" true)
+		(sdict "name" "`-feed`" "value" "Feeding Jasmin will rise her lvl and will grant you a small amount of **XP**, be careful tho we're not very happy with her food supplier." "inline" true))
+		"color" 16711680}}
+{{$ce5 := cembed
+		"title" "__**Page 5️⃣**__"
+		"description" (joinStr "" "**Fun/Random**\n\n`-Topic` Generates a conversation topic to help chat get moving.\n`-CatFact/cf/cat/catfacts` Cat Facts\n`-DogFact/dog/dogfacts` Dog Facts\n`-Advice` Don't be afraid to ask for advice!\n`-Roll` Roll dices, specify nothing for 6 sides, specify a number for max sides, or rpg dice syntax.\n`-WouldYouRather/wyr` Get presented with 2 options.\n`-8Ball` Wisdom")
+		"color" 16711680}}
+{{$ceEgg := cembed
+		"title" "__**🐰 Easter Egg Page 🥚**__"
+		"description" "Woohoo! You found <@!394196310938353666>'s Easter Egg!\n\n**__So What Happens Now?__**\n>>> - You get a free ***1,000 XP***\n- You can't get to this page again.\n- If you tell anyone, you will lose ***2,500 XP***\n- Nothing Else! That's all. <:dogekek:622077642820157480>"
+		"color" 15715328}}
+ 
+{{$reaction := ""}}
+{{if .Reaction.Emoji.ID}}
+	{{$reaction = joinStr "" .Reaction.Emoji.Name ":" .Reaction.Emoji.ID}}
+{{else}}
+	{{$reaction = .Reaction.Emoji.Name}}
+{{end}}
+ 
+{{if (reFind `This is the help menu` .ReactionMessage.Content)}}
+	{{deleteMessageReaction nil .ReactionMessage.ID .User.ID $reaction}}
+{{$customer := index (.ReactionMessage.Mentions) 0}}
+{{if eq .User.ID $customer.ID}}
+	{{scheduleUniqueCC 78 .ReactionMessage.ChannelID 300 (joinStr "" $customer.ID "HM" ) (sdict "chn" .ReactionMessage.ChannelID "msgID" .ReactionMessage.ID)}}
+	{{if eq $reaction "❔" }}
+		{{editMessage nil .ReactionMessage.ID (complexMessageEdit "content" (joinStr "" $customer.Mention " This is the help menu, navigate using the reaction numbers below:") "embed" $ce0)}}
+	{{else if eq $reaction "1️⃣"}}
+		{{editMessage nil .ReactionMessage.ID (complexMessageEdit "content" (joinStr "" $customer.Mention " This is the help menu, navigate using the reaction numbers below:") "embed" $ce1)}}
+	{{else if eq $reaction "2️⃣"}}
+		{{editMessage nil .ReactionMessage.ID (complexMessageEdit "content" (joinStr "" $customer.Mention " This is the help menu, navigate using the reaction numbers below:") "embed" $ce2)}}
+	{{else if eq $reaction "3️⃣"}}
+		{{editMessage nil .ReactionMessage.ID (complexMessageEdit "content" (joinStr "" $customer.Mention " This is the help menu, navigate using the reaction numbers below:") "embed" $ce3)}}
+	{{else if eq $reaction "4️⃣"}}
+		{{editMessage nil .ReactionMessage.ID (complexMessageEdit "content" (joinStr "" $customer.Mention " This is the help menu, navigate using the reaction numbers below:") "embed" $ce4)}}
+	{{else if eq $reaction "5️⃣"}}
+		{{editMessage nil .ReactionMessage.ID (complexMessageEdit "content" (joinStr "" $customer.Mention " This is the help menu, navigate using the reaction numbers below:") "embed" $ce5)}}
+	{{else if eq $reaction "❌"}}
+		{{deleteAllMessageReactions nil .ReactionMessage.ID}}
+		{{editMessage nil .ReactionMessage.ID (complexMessageEdit "content" (joinStr "" "Help menu closed") "embed" nil)}}
+		{{dbDel .User.ID "helpme"}}
+	{{else if eq $reaction "🥚"}}
+		{{if not (dbGet .User.ID "blockEE")}}
+			{{editMessage nil .ReactionMessage.ID (complexMessageEdit "content" "You found the **Easter Egg**!" "embed" $ceEgg)}}
+                        {{deleteAllMessageReactions nil .ReactionMessage.ID}}
+			{{$incrXPOneThousand := dbIncr .User.ID "XP" 1000}}
+			{{dbSetExpire .User.ID "blockEE" "true" 3024000}}
+		{{end}}
+	{{end}}
+{{end}}
+{{end}}
