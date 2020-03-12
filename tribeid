@@ -1,0 +1,29 @@
+{{/*
+Command reads input of user and changes nick to format NICK [Tribe of TRIBE-NAME].
+*/}}
+{{$embedhelp := cembed
+	"title" "__**-tribeid usage:**__"
+	"description" "`-tribeid help` shows this info.\n`-tribeid clean` removes nickname reverting to username.\n\nFor changing nickname to format **NICK [Tribe of TRIBE-NAME]**, you need to type:\n`-tribeid NEWNICKNAME | TRIBE'S-NAME`\nExample:\n`-tribeid ChrisDewa | Admins`\nRemember nicknames in discord cannot be longer than 32 characters."
+	"color" 63487
+	"thumbnail" (sdict "url" (joinStr "" "https://cdn.discordapp.com/avatars/" (toString .User.ID) "/" .User.Avatar ".png"))
+	"footer" (sdict "text" (joinStr "" "Req by " .User.Username "."))
+	"timestamp" .Message.Timestamp}}
+
+{{$args := parseArgs 1 "`-tribeid help` for more info."
+	(carg "string" "string")}}
+
+{{if eq ($args.Get 0) "clean"}}
+	{{editNickname ""}}
+{{else if eq ($args.Get 0) "help"}}
+	{{sendMessage nil $embedhelp}}
+{{else if (reFind `\s|\s` ($args.Get 0))}}
+	{{$newnick := index (split ($args.Get 0) "|") 0}}		
+	{{$tribeid := index (split ($args.Get 0) "|") 1}}
+	{{$outnick :=  (joinStr "" $newnick " [Tribe of " $tribeid "]")}}
+	{{if le (len $outnick) 32}}
+		{{editNickname $outnick}}
+	{{else}} Too long, try with a shorter nick/tribe name.
+	{{end}}
+{{else}}
+	Syntax error, try again or do `-tribeid help`
+{{end}}
