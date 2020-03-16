@@ -5,7 +5,7 @@
 {{$name := "#"}}    {{/*Replace # with any string if desiered. Can be the clock's name for example. Enclose text in*/}}
 
 {{$offset := toDuration 0}}
-{{if or (gt $utcoffset 0) (lt $utcoffset 0)}}
+{{if not $utcoffset 0}}
 	{{$offset = toDuration (mult 3600000000000 $utcoffset)}}
 {{end}}
 {{editChannelName $vcchannel (joinStr "" ((currentTime.Add $offset).Format "3:04 PM") " " $name)}}
